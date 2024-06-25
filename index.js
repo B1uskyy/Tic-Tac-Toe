@@ -157,11 +157,33 @@ function ScreenControler() {
 
         playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
 
+        board.forEach(row => {
+            row.forEach((cell, index) => {
+
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");
+
+                cellButton.dataset.column = index
+                cellButton.textContent = cell.getValue();
+                boardDiv.appendChild(cellButton);
+            })
+        })
 
     }
 
+    function clickHandlerBoard(e) {
+        const selectedColumn = e.target.dataset.column;
+        const selectedRow = e.target.dataset.rows;
+
+        if (!selectedColumn) return;
+
+        game.playRound(selectedColumn, selectedRow);
+        updateScreen()
+    }
+    boardDiv.addEventListener("click", clickHandlerBoard);
 
     updateScreen();
+
 }
 
 
