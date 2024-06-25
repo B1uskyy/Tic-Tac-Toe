@@ -138,18 +138,34 @@ function gameController() {
 
     printnewRound()
 
-    return {playRound, getActivePlayer}
+    return {playRound, getActivePlayer, getBoard: board.getBoard()}
 
 }
 
-const game = gameController();
-game.playRound(1, 2);
-game.playRound(2,0);
-game.playRound(1,1);
-game.playRound(2,1);
-game.playRound(2,2);
-game.playRound(0,1);
-game.playRound(0,0);
+
+function ScreenControler() {
+    const game = gameController();
+    const playerTurnDiv = document.querySelector(".turn");
+    const boardDiv = document.querySelector(".board");
+
+    const updateScreen = () =>  {
+        boardDiv.textContent = "";
+
+
+        const board = game.getBoard;
+        const activePlayer = game.getActivePlayer();
+
+        playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
+
+
+    }
+
+
+    updateScreen();
+}
+
+
+ScreenControler()
 
 
 
