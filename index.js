@@ -35,11 +35,13 @@ function Gameboard() {
         console.log(boardWithCellValues);
     }
 
+
+
     return {getBoard, dropToken,  printBoard};
 }
 
 function Cell() {
-    let value = "0";
+    let value = "";
 
 
     const addToken = (player) => {
@@ -48,8 +50,9 @@ function Cell() {
 
 
     const getValue = () => value;
+    const setValue = (newValue) => value = newValue;
 
-    return {addToken, getValue};
+    return {addToken, getValue, setValue};
 }
 
 
@@ -147,23 +150,24 @@ function ScreenControler() {
     const game = gameController();
     const playerTurnDiv = document.querySelector(".turn");
     const boardDiv = document.querySelector(".board");
+    const restartButton = document.querySelector(".restart")
+
+
 
     const updateScreen = () =>  {
         boardDiv.textContent = "";
-
-
         const board = game.getBoard;
         const activePlayer = game.getActivePlayer();
 
         playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
 
-        board.forEach(row => {
-            row.forEach((cell, index) => {
-
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, columnIndex) => {
                 const cellButton = document.createElement("button");
                 cellButton.classList.add("cell");
 
-                cellButton.dataset.column = index
+                cellButton.dataset.column = columnIndex;
+                cellButton.dataset.row = rowIndex;
                 cellButton.textContent = cell.getValue();
                 boardDiv.appendChild(cellButton);
             })
@@ -171,9 +175,26 @@ function ScreenControler() {
 
     }
 
+    function restartHandler() {
+        const board = game.getBoard;
+
+        board.forEach((row) => {
+            row.forEach(cell => {
+                console.log(cell.setValue(""))
+            })
+        })
+
+        let activePlayer = game.getActivePlayer();
+
+
+        updateScreen()
+    }
+
+    restartButton.addEventListener("click",restartHandler);
+
     function clickHandlerBoard(e) {
         const selectedColumn = e.target.dataset.column;
-        const selectedRow = e.target.dataset.rows;
+        const selectedRow = e.target.dataset.row;
 
         if (!selectedColumn) return;
 
@@ -185,6 +206,7 @@ function ScreenControler() {
     updateScreen();
 
 }
+
 
 
 ScreenControler()
