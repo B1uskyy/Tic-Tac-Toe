@@ -20,3 +20,32 @@
     background: lightyellow;
     cursor: pointer;
 }
+
+.restart {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.restartButton{
+    background: #fbca1f;
+    font-family: inherit;
+    padding: 0.6em 1.3em;
+    font-weight: 900;
+    font-size: 18px;
+    border: 3px solid black;
+    border-radius: 0.4em;
+    box-shadow: 0.1em 0.1em;
+    cursor: pointer;
+    margin-left: 12vw;
+}
+
+.restartButton:hover {
+    transform: translate(-0.05em, -0.05em);
+    box-shadow: 0.15em 0.15em;
+}
+
+.restartButton.active {
+    transform: translate(0.05em, 0.05em);
+    box-shadow: 0.05em 0.05em;
+}

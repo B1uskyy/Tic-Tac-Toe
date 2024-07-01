@@ -60,6 +60,7 @@ function gameController() {
 
     const players = [createPlayer("Mats", "O"), createPlayer("Åse", "X")];
     const board = Gameboard();
+    let hasWon = false;
     console.log(board);
 
     let activePlayer = players[0];
@@ -70,10 +71,15 @@ function gameController() {
 
     const getActivePlayer = () => activePlayer;
 
+    const getHasWon = () => hasWon;
+    const setHasWon = (value) => hasWon = value;
+
+
     const printnewRound = () => {
         board.printBoard();
-        console.log(`${getActivePlayer().name}'s turn.`)
+        console.log(`${getActivePlayer().getSymbol()}'s turn.`)
     }
+
 
     const playRound = (column, row) => {
         board.dropToken(activePlayer.getSymbol(), column, row);
@@ -95,7 +101,7 @@ function gameController() {
                 }
             }
             if (counter === 3) {
-                console.log(`${getActivePlayer().name} has won the game! Congratulations!`)
+                hasWon = true;
                 return;
             }
         }
@@ -113,7 +119,7 @@ function gameController() {
                 }
             }
             if (counter === 3) {
-                console.log(`${getActivePlayer().name} has won the game! Congratulations!`)
+                hasWon = true;
                 printnewRound();
                 return;
             }
@@ -123,25 +129,28 @@ function gameController() {
         // Cross check, hardcoded because loops are unnecessary
 
         if ((board.getBoard()[0][0].getValue() && board.getBoard()[1][1].getValue() && board.getBoard()[2][2].getValue()) === currentPlayerToken) {
-            console.log(`${getActivePlayer().name} has won the game! Congratulations!`)
+            hasWon = true;
             printnewRound();
             return;
         }
 
         if ((board.getBoard()[0][2].getValue() && board.getBoard()[1][1].getValue() && board.getBoard()[2][0].getValue()) === currentPlayerToken) {
-            console.log(`${getActivePlayer().name} has won the game! Congratulations!`)
+            hasWon = true;
             printnewRound();
             return;
         }
+
 
 
         switchPlayerTurn();
         printnewRound()
     }
 
+
+
     printnewRound()
 
-    return {playRound, getActivePlayer, getBoard: board.getBoard()}
+    return {playRound, getActivePlayer,getHasWon,setHasWon, getBoard: board.getBoard()}
 
 }
 
@@ -153,13 +162,17 @@ function ScreenControler() {
     const restartButton = document.querySelector(".restart")
 
 
-
     const updateScreen = () =>  {
         boardDiv.textContent = "";
         const board = game.getBoard;
         const activePlayer = game.getActivePlayer();
 
-        playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
+        playerTurnDiv.textContent = `${activePlayer.getSymbol()}'s turn...`
+
+
+        if (game.getHasWon()) {
+            playerTurnDiv.textContent = `${activePlayer.getSymbol()} has won!`
+        }
 
         board.forEach((row, rowIndex) => {
             row.forEach((cell, columnIndex) => {
@@ -185,6 +198,7 @@ function ScreenControler() {
         })
 
         let activePlayer = game.getActivePlayer();
+        game.setHasWon(false);
 
 
         updateScreen()
@@ -210,7 +224,6 @@ function ScreenControler() {
 
 
 ScreenControler()
-
 
 
 
