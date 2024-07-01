@@ -24,6 +24,8 @@ function Gameboard() {
         }
     }
 
+
+
     const getBoard = () => board;
 
     const dropToken = (player, column, row) => {
@@ -90,7 +92,11 @@ function gameController() {
 
 
     const playRound = (column, row) => {
-        board.dropToken(activePlayer.getSymbol(), column, row);
+
+        if (board.getValidMove() === true) {
+            board.dropToken(activePlayer.getSymbol(), column, row);
+        }
+
         console.log(`Dropping ${getActivePlayer().name}'s token into column ${column}...`);
 
 
