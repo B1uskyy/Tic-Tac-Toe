@@ -93,11 +93,16 @@ function gameController() {
 
     const playRound = (column, row) => {
 
-        if (board.getValidMove() === true) {
+        if (!getHasWon()) {
             board.dropToken(activePlayer.getSymbol(), column, row);
+            console.log(`Dropping ${getActivePlayer().name}'s token into column ${column}...`);
         }
 
-        console.log(`Dropping ${getActivePlayer().name}'s token into column ${column}...`);
+        if (getHasWon()) {
+            return;
+        }
+
+
 
 
 
@@ -160,8 +165,11 @@ function gameController() {
             switchPlayerTurn();
         }
 
+        console.log();
+
         printnewRound()
     }
+
 
 
 
@@ -229,7 +237,10 @@ function ScreenControler() {
 
         if (!selectedColumn) return;
 
-        game.playRound(selectedColumn, selectedRow);
+        if (!game.getHasWon()) {
+            game.playRound(selectedColumn, selectedRow);
+        }
+
         updateScreen()
     }
     boardDiv.addEventListener("click", clickHandlerBoard);
