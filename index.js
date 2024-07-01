@@ -82,8 +82,12 @@ function gameController() {
     const getActivePlayer = () => activePlayer;
 
     const getHasWon = () => hasWon;
-    const setHasWon = (value) => hasWon = value;
-
+    const setHasWon = (value) => {
+        hasWon = value;
+        if (hasWon) {
+            printnewRound();
+        }
+    };
 
     const printnewRound = () => {
         board.printBoard();
@@ -108,7 +112,7 @@ function gameController() {
 
         let currentPlayerToken = getActivePlayer().getSymbol();
 
-        // 3 vertical
+        // 3 horizontal
          for (let i = 0; i < 3; i ++) // i = boards rows
         {
             let counter = 0;
@@ -125,8 +129,7 @@ function gameController() {
             }
         }
 
-         // 3 horizontal
-
+         // 3 vertical
         for (let i = 0; i < 3; i++) {
 
             let counter = 0;
@@ -142,18 +145,28 @@ function gameController() {
                 printnewRound();
                 return;
             }
+            console.log(`Token: ${currentPlayerToken}`);
+
         }
 
 
-        // Cross check, hardcoded because loops are unnecessary
-
-        if ((board.getBoard()[0][0].getValue() && board.getBoard()[1][1].getValue() && board.getBoard()[2][2].getValue()) === currentPlayerToken) {
+        // Check the primary diagonal
+        if (
+            board.getBoard()[0][0].getValue() === currentPlayerToken &&
+            board.getBoard()[1][1].getValue() === currentPlayerToken &&
+            board.getBoard()[2][2].getValue() === currentPlayerToken
+        ) {
             hasWon = true;
             printnewRound();
             return;
         }
 
-        if ((board.getBoard()[0][2].getValue() && board.getBoard()[1][1].getValue() && board.getBoard()[2][0].getValue()) === currentPlayerToken) {
+// Check the secondary diagonal
+        if (
+            board.getBoard()[0][2].getValue() === currentPlayerToken &&
+            board.getBoard()[1][1].getValue() === currentPlayerToken &&
+            board.getBoard()[2][0].getValue() === currentPlayerToken
+        ) {
             hasWon = true;
             printnewRound();
             return;
