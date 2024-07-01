@@ -14,6 +14,7 @@ function Gameboard() {
     const rows = 3;
     const column = 3;
     const board = [];
+    let validMove;
 
     // 2d array to represent the gameboard
     for (let i = 0; i < rows; i++) {
@@ -27,8 +28,15 @@ function Gameboard() {
 
     const dropToken = (player, column, row) => {
 
+        if (board[row][column].getValue() !== "") {
+            validMove = false
+            return
+        }
         board[row][column].addToken(player);
+        validMove = true;
     };
+
+    const getValidMove = () => validMove;
 
     const printBoard = () => {
         const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()));
@@ -37,7 +45,7 @@ function Gameboard() {
 
 
 
-    return {getBoard, dropToken,  printBoard};
+    return {getBoard, dropToken,  printBoard,getValidMove};
 }
 
 function Cell() {
@@ -142,7 +150,10 @@ function gameController() {
 
 
 
-        switchPlayerTurn();
+        if (board.getValidMove() === true) {
+            switchPlayerTurn();
+        }
+
         printnewRound()
     }
 
